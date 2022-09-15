@@ -40,12 +40,12 @@ describe('Testa GET /items/:id ', () => {
   it('Deve retornar status 200 e um objeto igual a o item cadastrado', async () => {
     const item = itemFactory();
     await supertest(app).post("/items").send(item);
-    const registeredItem = await prisma.items.findFirst({where: {title: item.title}});
     
+    const registeredItem = await prisma.items.findFirst({where: {title: item.title}});
     const result = await supertest(app).get(`/items/${registeredItem.id}`).send();
-
+    
     expect(result.status).toEqual(200);
-    expect(result.body).toBeInstanceOf(Object);
+    expect(result.body).toStrictEqual(registeredItem);
   });
   
   it('Deve retornar status 404 caso não exista um item com esse id', async () => {
